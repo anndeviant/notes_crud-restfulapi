@@ -1,0 +1,39 @@
+GET http://localhost:5000/notes
+
+###
+GET http://localhost:5000/notes/1
+
+###
+POST http://localhost:5000/notes/
+Content-Type: application/json
+
+{
+    "title": "Golang",
+    "content": "milestones",
+    "priority": "Biasa",
+    "category": "Work"
+}
+
+###
+// Untuk priority hanya bisa diisi dengan "Penting", "Biasa", atau "Rendah"
+PUT http://localhost:5000/notes/2
+Content-Type: application/json
+
+{
+    "title": "Updated Meeting Notes",
+    "content": "Revised project timeline and milestones",
+    "priority": "Penting",
+    "category": "Work"
+}
+
+###
+PATCH http://localhost:5000/notes/3
+Content-Type: application/json
+
+{
+    "title": "Partially Updated Notes",
+    "priority": "Rendah"
+}
+
+###
+DELETE http://localhost:5000/notes/1
