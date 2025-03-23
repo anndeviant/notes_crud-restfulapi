@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = "https://server-annas-298647753913.us-central1.run.app";
 let notes = [];
 let isEditing = false;
 
