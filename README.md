@@ -12,8 +12,6 @@ Repositori ini berisi dua folder utama: `client` dan `server`. Masing-masing fol
 ├── server/
 │   ├── folder
 │   └── package.json
-├── 123220045_Annas Sovianto_Laporan_Tugas2.docx
-├── 123220045_Annas Sovianto_Laporan_Tugas2.pdf
 └── README.md
 ```
 
