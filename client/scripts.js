@@ -39,10 +39,10 @@ cancelEdit.addEventListener("click", () => {
 });
 
 function fetchNotes() {
-  fetch(`${API_URL}/notes`)
-    .then((response) => response.json())
-    .then((data) => {
-      notes = data;
+  axios
+    .get(`${API_URL}/notes`)
+    .then((response) => {
+      notes = response.data;
       renderNotes();
     })
     .catch((error) => console.error("Error fetching notes:", error));
@@ -82,53 +82,33 @@ function renderNotes() {
 }
 
 function createNoteData(noteData) {
-  fetch(`${API_URL}/notes`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(noteData),
-  })
+  axios
+    .post(`${API_URL}/notes`, noteData)
     .then((response) => {
-      if (response.ok) {
-        fetchNotes();
-      }
-      return response.json();
+      fetchNotes();
+      console.log("Success:", response.data);
     })
-    .then((data) => console.log("Success:", data))
     .catch((error) => console.error("Error:", error));
 }
 
 function updateNoteData(id, noteData) {
-  fetch(`${API_URL}/notes/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(noteData),
-  })
+  axios
+    .put(`${API_URL}/notes/${id}`, noteData)
     .then((response) => {
-      if (response.ok) {
-        fetchNotes();
-      }
-      return response.json();
+      fetchNotes();
+      console.log("Success:", response.data);
     })
-    .then((data) => console.log("Success:", data))
     .catch((error) => console.error("Error:", error));
 }
 
 function deleteNote(id) {
   if (confirm("Are you sure you want to delete this note?")) {
-    fetch(`${API_URL}/notes/${id}`, {
-      method: "DELETE",
-    })
+    axios
+      .delete(`${API_URL}/notes/${id}`)
       .then((response) => {
-        if (response.ok) {
-          fetchNotes();
-        }
-        return response.json();
+        fetchNotes();
+        console.log("Success:", response.data);
       })
-      .then((data) => console.log("Success:", data))
       .catch((error) => console.error("Error:", error));
   }
 }
