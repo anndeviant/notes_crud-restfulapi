@@ -1,4 +1,4 @@
-const API_URL = "https://server-annas-298647753913.us-central1.run.app";
+const API_URL = "https://annas-server-298647753913.us-central1.run.app";
 let notes = [];
 let isEditing = false;
 
