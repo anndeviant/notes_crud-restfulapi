@@ -1,4 +1,4 @@
-const API_URL = "https://annas-server-298647753913.us-central1.run.app";
+const API_URL = "https://annas-server-298647753913.us-central1.run.app/notes";
 let notes = [];
 let isEditing = false;
 
@@ -39,10 +39,13 @@ cancelEdit.addEventListener("click", () => {
 });
 
 function fetchNotes() {
-  axios
-    .get(`${API_URL}/notes`)
-    .then((response) => {
-      notes = response.data;
+  fetch(`${API_URL}/notes`, {
+    method: "GET",
+    credentials: "include",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      notes = data;
       renderNotes();
     })
     .catch((error) => console.error("Error fetching notes:", error));
@@ -82,33 +85,56 @@ function renderNotes() {
 }
 
 function createNoteData(noteData) {
-  axios
-    .post(`${API_URL}/notes`, noteData)
+  fetch(`${API_URL}/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(noteData),
+    credentials: "include",
+  })
     .then((response) => {
-      fetchNotes();
-      console.log("Success:", response.data);
+      if (response.ok) {
+        fetchNotes();
+      }
+      return response.json();
     })
+    .then((data) => console.log("Success:", data))
     .catch((error) => console.error("Error:", error));
 }
 
 function updateNoteData(id, noteData) {
-  axios
-    .put(`${API_URL}/notes/${id}`, noteData)
+  fetch(`${API_URL}/notes/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(noteData),
+    credentials: "include",
+  })
     .then((response) => {
-      fetchNotes();
-      console.log("Success:", response.data);
+      if (response.ok) {
+        fetchNotes();
+      }
+      return response.json();
     })
+    .then((data) => console.log("Success:", data))
     .catch((error) => console.error("Error:", error));
 }
 
 function deleteNote(id) {
   if (confirm("Are you sure you want to delete this note?")) {
-    axios
-      .delete(`${API_URL}/notes/${id}`)
+    fetch(`${API_URL}/notes/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
       .then((response) => {
-        fetchNotes();
-        console.log("Success:", response.data);
+        if (response.ok) {
+          fetchNotes();
+        }
+        return response.json();
       })
+      .then((data) => console.log("Success:", data))
       .catch((error) => console.error("Error:", error));
   }
 }
