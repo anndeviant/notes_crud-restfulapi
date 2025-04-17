@@ -3,16 +3,11 @@ import cors from "cors";
 import UserRoute from "./routes/noteRoutes.js";
 
 const app = express();
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(UserRoute);
 
-const PORT = 5000;
+const PORT = 8585;
 app
   .listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
