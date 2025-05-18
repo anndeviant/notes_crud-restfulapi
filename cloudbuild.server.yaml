@@ -25,7 +25,7 @@ steps:
         "--timeout",
         "1000s",
         "--port",
-        "8585",
+        "5000",
         "--region",
         "us-central1",
         "--allow-unauthenticated",
