@@ -3,6 +3,7 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
+// Remove User import to avoid circular dependency
 const Note = db.define(
   "notes",
   {
@@ -28,11 +29,17 @@ const Note = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+// Remove associations here - will be set up in a separate file
 
 export default Note;
 

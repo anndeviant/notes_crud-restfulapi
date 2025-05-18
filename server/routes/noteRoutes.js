@@ -1,4 +1,6 @@
 import express from "express";
+import { verifyToken } from "../middleware/VerifyToken.js";
+
 import {
   getNotes,
   getNoteById,
@@ -9,11 +11,12 @@ import {
 
 const router = express.Router();
 
-router.get("/notes", getNotes);
-router.get("/notes/:id", getNoteById);
-router.post("/notes/", createNote);
-router.put("/notes/:id", updateNote);
-router.patch("/notes/:id", updateNote);
-router.delete("/notes/:id", deleteNote);
+// Ensure all routes are protected with verifyToken middleware
+router.get("/notes", verifyToken, getNotes);
+router.get("/notes/:id", verifyToken, getNoteById);
+router.post("/notes", verifyToken, createNote);
+router.put("/notes/:id", verifyToken, updateNote);
+router.patch("/notes/:id", verifyToken, updateNote);
+router.delete("/notes/:id", verifyToken, deleteNote);
 
 export default router;
