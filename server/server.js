@@ -10,15 +10,13 @@ const app = express();
 
 dotenv.config();
 
-// Set up associations between models
 setupAssociations();
 
 app.use(cookieParser());
-// Update CORS to allow all necessary methods
 app.use(
   cors({
     credentials: true,
-    origin: "http://127.0.0.1:5500",
+    origin: "https://annas-client-dot-f-02-450706.uc.r.appspot.com",
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
