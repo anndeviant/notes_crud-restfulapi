@@ -4,63 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes App</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Notes Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 
-<body>
-    <div class="container">
-        <h1>Notes App</h1>
+<body class="bg-light">
+    <!-- First load axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        <div class="card">
-            <h2 id="formTitle">Create New Note</h2>
-            <form id="noteForm">
-                <input type="hidden" id="noteId">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" required>
-                </div>
-                <div class="form-group">
-                    <label for="content">Content</label>
-                    <textarea id="content" rows="4" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="priority">Priority</label>
-                    <select id="priority">
-                        <option value="Penting">Penting</option>
-                        <option value="Biasa" selected>Biasa</option>
-                        <option value="Rendah">Rendah</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <input type="text" id="category">
-                </div>
-                <button type="submit">Save Note</button>
-                <button type="button" id="cancelEdit" style="display:none">Cancel</button>
-            </form>
+    <!-- Then load auth service -->
+    <script src="scripts/services/auth.js"></script>
+
+    <!-- Auth check script -->
+    <script>
+        // Immediate authentication check before rendering page
+        (function () {
+            if (!isAuthenticated()) {
+                window.location.replace('auth.html');
+            }
+        })();
+    </script>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                Notes Dashboard
+            </a>
+            <div class="d-flex align-items-center">
+                <span id="user-name" class="text-white me-3"></span>
+                <button id="logout-btn" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </button>
+            </div>
         </div>
+    </nav>
 
-        <div class="card">
-            <h2>Notes List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Content</th>
-                        <th>Priority</th>
-                        <th>Category</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="notesTableBody">
-                    <!-- Notes -->
-                </tbody>
-            </table>
+    <div class="container-fluid mt-4">
+        <div class="row g-4">
+            <!-- Sidebar with Form -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm position-sticky" style="top: 1rem;">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title mb-0" id="formTitle">Create New Note</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="noteForm">
+                            <input type="hidden" id="noteId">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Content</label>
+                                <textarea class="form-control" id="content" rows="4" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="priority" class="form-label">Priority</label>
+                                <select class="form-select" id="priority">
+                                    <option value="Penting">Penting</option>
+                                    <option value="Biasa" selected>Biasa</option>
+                                    <option value="Rendah">Rendah</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <input type="text" class="form-control" id="category">
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary flex-grow-1">
+                                    <i class="fa-solid fa-save me-1"></i> Save Note
+                                </button>
+                                <button type="button" id="cancelEdit" class="btn btn-secondary" style="display:none">
+                                    <i class="fa-solid fa-ban me-1"></i> Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0" id="notes-title">My Notes</h4>
+                </div>
+
+                <!-- Toast container for notifications -->
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <!-- Toast will be inserted dynamically via JS -->
+                </div>
+
+                <!-- Notes container -->
+                <div id="notes-container">
+                    <!-- Notes will be inserted here by JavaScript -->
+                </div>
+
+                <!-- Empty state -->
+                <div id="empty-state" class="text-center py-1 d-none">
+                    <div class="py-4 card shadow-sm">
+                        <i class="fa-solid fa-note-sticky fa-4x text-muted mb-3"></i>
+                        <h5 class="text-muted">No notes yet</h5>
+                        <p class="text-muted">Create your first note using the form</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="scripts.js"></script>
+
+    <!-- Load Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Load main script last -->
+    <script src="scripts/scripts.js"></script>
 </body>
 
 </html>
